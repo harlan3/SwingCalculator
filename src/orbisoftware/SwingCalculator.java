@@ -24,7 +24,12 @@ public class SwingCalculator extends JFrame implements ActionListener {
 	private final Color EQUAL_COLOR = new Color(0, 150, 100); // Green for =
 
 	SwingCalculator() {
+        super("Swing Calculator");
 
+        try {
+            UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+        } catch (Exception ignored) {}
+        
 		str = str1 = str2 = "";
 
 		field = new JTextField(16);
@@ -124,11 +129,20 @@ public class SwingCalculator extends JFrame implements ActionListener {
 		// Apply dark theme to panel and frame
 		p.setBackground(PANEL_COLOR);
 		setBackground(BACKGROUND_COLOR);
+		
+		JPanel appPanel = new JPanel();
 
-		setLayout(new BorderLayout());
-		add(field, BorderLayout.NORTH);
-		add(p, BorderLayout.CENTER);
-
+		appPanel.setLayout(new BorderLayout());
+		appPanel.add(field, BorderLayout.NORTH);
+		appPanel.add(p, BorderLayout.CENTER);
+		
+		appPanel.setBorder(BorderFactory.createCompoundBorder(
+			    BorderFactory.createRaisedBevelBorder(),
+			    BorderFactory.createLineBorder(Color.black, 5)
+			));
+		
+		setContentPane(appPanel);
+		
 		setSize(440, 620);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);

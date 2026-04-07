@@ -67,12 +67,12 @@ public class SwingCalculator extends JFrame implements ActionListener {
 		JButton bsqr = new JButton("x²");
 		JButton binv = new JButton("1/x");
 		JButton bfac = new JButton("!");
-		JButton blog = new JButton("Log");
+		JButton blog = new JButton("log");
 		JButton bln = new JButton("ln");
-		JButton bsin = new JButton("Sin");
-		JButton bcos = new JButton("Cos");
-		JButton btan = new JButton("Tan");
-		JButton bexp = new JButton("Exp");
+		JButton bsin = new JButton("sin");
+		JButton bcos = new JButton("cos");
+		JButton btan = new JButton("tan");
+		JButton bexp = new JButton("e");
 
 		JButton bMC = new JButton("MC");
 		JButton bMR = new JButton("MR");
@@ -103,7 +103,7 @@ public class SwingCalculator extends JFrame implements ActionListener {
 			} else if ("+-*/".contains(text)) {
 				btn.setBackground(OPERATOR_COLOR);
 				btn.setForeground(Color.WHITE);
-			} else if ("C ! π ln Log Sin Cos Tan Exp +/-".contains(text)) {
+			} else if ("C ! π ln log sin cos tan Exp +/-".contains(text)) {
 				btn.setBackground(BUTTON_COLOR);
 				btn.setForeground(TEXT_COLOR);
 			} else if ("MC MR M+ M-".contains(text)) {
@@ -187,6 +187,8 @@ public class SwingCalculator extends JFrame implements ActionListener {
 			toggleSign();
 		} else if (s.equals("π")) {
 			insertPi();
+		} else if (s.equals("e")) {
+			insertExp();
 		} else {
 			str1 = s;
 			actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "="));
@@ -194,8 +196,8 @@ public class SwingCalculator extends JFrame implements ActionListener {
 	}
 
 	private boolean isUnaryOperation(String op) {
-		return op.equals("√") || op.equals("1/x") || op.equals("Log") || op.equals("ln") || op.equals("Sin")
-				|| op.equals("Cos") || op.equals("Tan") || op.equals("Exp") || op.equals("!") || op.equals("x²");
+		return op.equals("√") || op.equals("1/x") || op.equals("log") || op.equals("ln") || op.equals("sin")
+				|| op.equals("cos") || op.equals("tan") || op.equals("Exp") || op.equals("!") || op.equals("x²");
 	}
 
 	private boolean isBinaryOperator(String op) {
@@ -241,23 +243,20 @@ public class SwingCalculator extends JFrame implements ActionListener {
 			case "1/x":
 				te = 1 / num1;
 				break;
-			case "Log":
+			case "log":
 				te = Math.log10(num1);
 				break;
 			case "ln":
 				te = Math.log(num1);
 				break;
-			case "Sin":
+			case "sin":
 				te = Math.sin(Math.toRadians(num1));
 				break;
-			case "Cos":
+			case "cos":
 				te = Math.cos(Math.toRadians(num1));
 				break;
-			case "Tan":
+			case "tan":
 				te = Math.tan(Math.toRadians(num1));
-				break;
-			case "Exp":
-				te = Math.exp(num1);
 				break;
 			case "!":
 				int value = (int) num1;
@@ -298,6 +297,16 @@ public class SwingCalculator extends JFrame implements ActionListener {
 			str2 = piStr;
 		} else {
 			str = piStr;
+		}
+		field.setText(str + str1 + str2);
+	}
+	
+	private void insertExp() {
+		String expStr = String.valueOf(Math.E);
+		if (!str1.equals("")) {
+			str2 = expStr;
+		} else {
+			str = expStr;
 		}
 		field.setText(str + str1 + str2);
 	}

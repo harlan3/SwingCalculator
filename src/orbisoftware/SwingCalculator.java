@@ -19,8 +19,8 @@ public class SwingCalculator extends JFrame implements ActionListener {
 	private final Color TEXT_FIELD_COLOR = new Color(25, 25, 25); // Text field bg
 	private final Color TEXT_COLOR = new Color(220, 220, 220); // Light gray text
 	private final Color BUTTON_COLOR = new Color(55, 55, 55); // Normal buttons
-	private final Color OPERATOR_COLOR = new Color(101, 152, 251); // Blue for operators
-	private final Color SPECIAL_COLOR = new Color(70, 70, 70); // Scientific & memory buttons
+	private final Color OPERATOR_COLOR = new Color(101, 152, 251); // Blue for operator buttons
+	private final Color MEMORY_COLOR = new Color(248, 132, 132); // Red for memory buttons
 	private final Color EQUAL_COLOR = new Color(0, 150, 100); // Green for =
 
 	SwingCalculator() {
@@ -103,8 +103,11 @@ public class SwingCalculator extends JFrame implements ActionListener {
 			} else if ("+-*/".contains(text)) {
 				btn.setBackground(OPERATOR_COLOR);
 				btn.setForeground(Color.WHITE);
-			} else if ("MC MR M+ M- C ! π ln Log Sin Cos Tan Exp +/-".contains(text)) {
-				btn.setBackground(SPECIAL_COLOR);
+			} else if ("C ! π ln Log Sin Cos Tan Exp +/-".contains(text)) {
+				btn.setBackground(BUTTON_COLOR);
+				btn.setForeground(TEXT_COLOR);
+			} else if ("MC MR M+ M-".contains(text)) {
+				btn.setBackground(MEMORY_COLOR);
 				btn.setForeground(TEXT_COLOR);
 			} else {
 				btn.setBackground(BUTTON_COLOR);

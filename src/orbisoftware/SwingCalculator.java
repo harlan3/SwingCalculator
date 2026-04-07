@@ -72,6 +72,11 @@ public class SwingCalculator extends JFrame implements ActionListener {
 		JButton bsin = new JButton("sin");
 		JButton bcos = new JButton("cos");
 		JButton btan = new JButton("tan");
+		JButton bcsc = new JButton("csc");
+		JButton bsec = new JButton("sec");
+		JButton bcot = new JButton("cot");
+		JButton bmod = new JButton("mod");
+		
 		JButton bexp = new JButton("e");
 
 		JButton bMC = new JButton("MC");
@@ -85,7 +90,8 @@ public class SwingCalculator extends JFrame implements ActionListener {
 		Font buttonFont = new Font("Arial", Font.PLAIN, 18);
 
 		JButton[] allButtons = { b0, b1, b2, b3, b4, b5, b6, b7, b8, b9, ba, bs, bd, bm, beq, bc, be, bsign, bpi, bsq,
-				bpow, bsqr, binv, bfac, blog, bln, bsin, bcos, btan, bexp, bMC, bMR, bm1, bm2, blshift, brshift };
+				bpow, bsqr, binv, bfac, blog, bln, bsin, bcos, btan, bcsc, bsec, bcot, bmod, bexp, bMC, bMR, bm1, bm2, 
+				blshift, brshift };
 
 		for (JButton btn : allButtons) {
 			btn.setFont(buttonFont);
@@ -116,7 +122,7 @@ public class SwingCalculator extends JFrame implements ActionListener {
 		}
 
 		JPanel p = new JPanel();
-		p.setLayout(new GridLayout(9, 4, 8, 8));
+		p.setLayout(new GridLayout(10, 4, 8, 8));
 
 	       // Layout
         p.add(bMR); p.add(bMC); p.add(bm1); p.add(bm2);
@@ -125,6 +131,7 @@ public class SwingCalculator extends JFrame implements ActionListener {
         p.add(b1);  p.add(b2);  p.add(b3);  p.add(bs);
         p.add(b0);  p.add(be);  p.add(bsign); p.add(ba);
         p.add(bsin);p.add(bcos);p.add(btan); p.add(bfac);
+        p.add(bcsc);p.add(bsec);p.add(bcot); p.add(bmod);
         p.add(bsq); p.add(bsqr); p.add(bpow); p.add(binv);
         p.add(blshift); p.add(brshift);  p.add(bexp); p.add(bpi);
         p.add(bln); p.add(blog); p.add(bc); p.add(beq);
@@ -201,7 +208,7 @@ public class SwingCalculator extends JFrame implements ActionListener {
 	}
 
 	private boolean isBinaryOperator(String op) {
-		return op.equals("+") || op.equals("-") || op.equals("*") || op.equals("/") || op.equals("xʸ")
+		return op.equals("+") || op.equals("-") || op.equals("*") || op.equals("/") || op.equals("xʸ") || op.equals("mod")
 				|| op.equals("<<") || op.equals(">>");
 	}
 
@@ -226,6 +233,9 @@ public class SwingCalculator extends JFrame implements ActionListener {
 				break;
 			case "xʸ":
 				te = Math.pow(num1, num2);
+				break;
+			case "mod":
+				te = num1 % num2;
 				break;
 			case "<<":
 				te = (long) num1 << (long) num2;
@@ -257,6 +267,15 @@ public class SwingCalculator extends JFrame implements ActionListener {
 				break;
 			case "tan":
 				te = Math.tan(Math.toRadians(num1));
+				break;
+			case "csc":
+				te = 1.0 / Math.sin(Math.toRadians(num1));
+				break;
+			case "sec":
+				te = 1.0 / Math.cos(Math.toRadians(num1));
+				break;
+			case "cot":
+				te = 1.0 / Math.tan(Math.toRadians(num1));
 				break;
 			case "!":
 				int value = (int) num1;

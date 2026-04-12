@@ -43,9 +43,10 @@ public class ProgrammerCalculator extends JPanel {
     public JPanel setTheContentPane() {
     	
     	JPanel mainPanel = new JPanel();
+    	mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
     	
-    	mainPanel.add(buildTopPanel(), BorderLayout.NORTH);
-    	mainPanel.add(buildButtonPanel(), BorderLayout.CENTER);
+    	mainPanel.add(buildTopPanel());
+    	mainPanel.add(buildButtonPanel());
 
         updateBaseButtons();
         updateConversionsFromDisplay();
@@ -62,7 +63,6 @@ public class ProgrammerCalculator extends JPanel {
 
         displayField.setFont(new Font("Arial", Font.BOLD, 26));
         displayField.setHorizontalAlignment(SwingConstants.RIGHT);
-        displayField.setPreferredSize(new Dimension(300, 60));
         displayField.addActionListener(e -> evaluateExpression());
         displayField.setBackground(BACKGROUND_COLOR);
         displayField.setForeground(PANEL_COLOR);

@@ -313,6 +313,7 @@ public class ScientificCalulator extends JPanel implements ActionListener {
 		
         CardLayout cl = (CardLayout) SharedClasses.cards.getLayout();
         cl.show(SharedClasses.cards, "two");
+        SharedClasses.activeCard = 1;
 	}
 	
 	private void applyAbsoluteValue() {

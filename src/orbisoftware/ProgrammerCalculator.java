@@ -36,6 +36,8 @@ public class ProgrammerCalculator extends JPanel {
 	private final Color OPERATOR_COLOR = new Color(101, 152, 251); // Blue for operator buttons
 	private final Color EQUAL_COLOR = new Color(0, 150, 100); // Green for =
 	
+	private int appWidth = 380;
+			
     public ProgrammerCalculator() {
 
     }
@@ -55,6 +57,11 @@ public class ProgrammerCalculator extends JPanel {
         mainPanel.setForeground(PANEL_COLOR);
 
         return mainPanel;
+    }
+    
+    public void frameResized(int width) {
+    	
+    	appWidth = width - 60;
     }
 
     private JPanel buildTopPanel() {
@@ -113,7 +120,7 @@ public class ProgrammerCalculator extends JPanel {
         JLabel[] valueLabels = {decValueLabel, hexValueLabel, octValueLabel, binValueLabel};
         String[] names = {"DEC", "HEX", "OCT", "BIN"};
 
-        Dimension valueSize = new Dimension(380, 22);
+        Dimension valueSize = new Dimension(appWidth, 22);
 
         gbc.insets = new Insets(2, 4, 2, 4);
         gbc.gridy = 0;
@@ -225,6 +232,7 @@ public class ProgrammerCalculator extends JPanel {
 
         CardLayout cl = (CardLayout) SharedClasses.cards.getLayout();
         cl.show(SharedClasses.cards, "one");
+        SharedClasses.activeCard = 0;
     }
     
     private void appendToken(String token) {

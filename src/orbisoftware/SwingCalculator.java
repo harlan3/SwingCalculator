@@ -2,6 +2,8 @@ package orbisoftware;
 
 import java.awt.CardLayout;
 import java.awt.Dimension;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -19,15 +21,35 @@ public class SwingCalculator extends JFrame {
             UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
         } catch (Exception ignored) {}
         
+        performContentSetup();
+        
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                if (SharedClasses.activeCard == 1) {          	
+                	SharedClasses.ProgrammerCalculator.frameResized(getWidth());
+                	SharedClasses.cards.removeAll();
+                    performContentSetup();
+                }
+            }
+        });
+        
+        setVisible(true);
+	}
+	
+	private void performContentSetup() {
+		
         SharedClasses.cards.add(SharedClasses.ScientificCalculator.setTheContentPane(), "one");
         SharedClasses.cards.add(SharedClasses.ProgrammerCalculator.setTheContentPane(), "two");
         
         setContentPane(SharedClasses.cards);
         
         CardLayout cl = (CardLayout) SharedClasses.cards.getLayout();
-        cl.show(SharedClasses.cards, "one");
         
-        setVisible(true);
+        if (SharedClasses.activeCard == 0)
+        	cl.show(SharedClasses.cards, "one");
+        else if (SharedClasses.activeCard == 1)
+        	cl.show(SharedClasses.cards, "two");
 	}
 	
 	public static void main(String[] args) {

@@ -63,6 +63,7 @@ public class ProgrammerCalculator extends JPanel {
 
         displayField.setFont(new Font("Arial", Font.BOLD, 26));
         displayField.setHorizontalAlignment(SwingConstants.RIGHT);
+        displayField.setPreferredSize(new Dimension(300, 60));
         displayField.addActionListener(e -> evaluateExpression());
         displayField.setBackground(BACKGROUND_COLOR);
         displayField.setForeground(PANEL_COLOR);

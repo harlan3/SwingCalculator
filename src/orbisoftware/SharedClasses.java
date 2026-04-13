@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 
 public class SharedClasses {
 
-	public static int activeCard;
+	public static int activeCard = 0;
 	public static SwingCalculator SwingCalculator;
 	public static JPanel cards = new JPanel(new CardLayout());
 	public static ScientificCalulator ScientificCalculator = new ScientificCalulator();

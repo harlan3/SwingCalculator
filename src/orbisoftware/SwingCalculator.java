@@ -2,18 +2,18 @@ package orbisoftware;
 
 import java.awt.CardLayout;
 import java.awt.Dimension;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-
+import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 public class SwingCalculator extends JFrame {
 	
 	SwingCalculator() {
-		
 		super("Swing Calculator");
         setMinimumSize(new Dimension(440, 705));
+        
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenWidth = screenSize.width;
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
@@ -21,18 +21,8 @@ public class SwingCalculator extends JFrame {
             UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
         } catch (Exception ignored) {}
         
+        SharedClasses.ProgrammerCalculator.frameResized(screenWidth);
         performContentSetup();
-        
-        addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                if (SharedClasses.activeCard == 1) {          	
-                	SharedClasses.ProgrammerCalculator.frameResized(getWidth());
-                	SharedClasses.cards.removeAll();
-                    performContentSetup();
-                }
-            }
-        });
         
         setVisible(true);
 	}

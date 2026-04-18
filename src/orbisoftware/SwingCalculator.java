@@ -10,7 +10,7 @@ public class SwingCalculator extends JFrame {
 	
 	SwingCalculator() {
 		super("Swing Calculator");
-        setMinimumSize(new Dimension(440, 705));
+        setMinimumSize(new Dimension(450, 705));
         
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int screenWidth = screenSize.width;

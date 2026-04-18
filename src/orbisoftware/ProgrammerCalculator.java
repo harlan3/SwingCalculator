@@ -3,6 +3,7 @@ package orbisoftware;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.math.BigInteger;
 import java.util.*;
 import java.util.List;
 
@@ -273,7 +274,7 @@ public class ProgrammerCalculator extends JPanel {
 
     private void setBase(BaseMode newBase) {
         try {
-            long value = evaluate(displayField.getText(), currentBase);
+            BigInteger value = evaluate(displayField.getText(), currentBase);
             currentBase = newBase;
             displayField.setText(formatValue(value, currentBase));
         } catch (Exception ignored) {
@@ -325,7 +326,7 @@ public class ProgrammerCalculator extends JPanel {
 
     private void evaluateExpression() {
         try {
-            long result = evaluate(displayField.getText(), currentBase);
+            BigInteger result = evaluate(displayField.getText(), currentBase);
             displayField.setText(formatValue(result, currentBase));
             updateConversions(result);
         } catch (Exception ex) {
@@ -340,7 +341,7 @@ public class ProgrammerCalculator extends JPanel {
 
     private void updateConversionsFromDisplay() {
         try {
-            long value = evaluate(displayField.getText(), currentBase);
+            BigInteger value = evaluate(displayField.getText(), currentBase);
             updateConversions(value);
         } catch (Exception ex) {
             decValueLabel.setText("0");
@@ -350,25 +351,25 @@ public class ProgrammerCalculator extends JPanel {
         }
     }
 
-    private void updateConversions(long value) {
-        decValueLabel.setText(Long.toString(value));
-        hexValueLabel.setText(Long.toHexString(value).toUpperCase());
-        octValueLabel.setText(Long.toOctalString(value));
-        binValueLabel.setText(Long.toBinaryString(value));
+    private void updateConversions(BigInteger value) {
+        decValueLabel.setText(value.toString());
+        hexValueLabel.setText(value.toString(16).toUpperCase());
+        octValueLabel.setText(value.toString(8));
+        binValueLabel.setText(value.toString(2));
     }
 
-    private String formatValue(long value, BaseMode base) {
+    private String formatValue(BigInteger value, BaseMode base) {
         return switch (base) {
-            case DEC -> Long.toString(value);
-            case HEX -> Long.toHexString(value).toUpperCase();
-            case OCT -> Long.toOctalString(value);
-            case BIN -> Long.toBinaryString(value);
+            case DEC -> value.toString();
+            case HEX -> value.toString(16).toUpperCase();
+            case OCT -> value.toString(8);
+            case BIN -> value.toString(2);
         };
     }
 
-    private long evaluate(String expression, BaseMode base) {
+    private BigInteger evaluate(String expression, BaseMode base) {
         if (expression == null || expression.trim().isEmpty()) {
-            return 0;
+            return BigInteger.ZERO;
         }
         List<String> tokens = tokenize(expression);
         List<String> postfix = toPostfix(tokens);
@@ -552,8 +553,8 @@ public class ProgrammerCalculator extends JPanel {
         return true;
     }
 
-    private long evalPostfix(List<String> postfix, BaseMode base) {
-        Deque<Long> stack = new ArrayDeque<>();
+    private BigInteger evalPostfix(List<String> postfix, BaseMode base) {
+        Deque<BigInteger> stack = new ArrayDeque<>();
 
         for (String token : postfix) {
             if (isNumberToken(token)) {
@@ -563,78 +564,78 @@ public class ProgrammerCalculator extends JPanel {
 
             switch (token) {
                 case "~" -> {
-                    long a = pop(stack);
-                    stack.push(~a);
+                    BigInteger a = pop(stack);
+                    stack.push(a.not());
                 }
                 case "u-" -> {
-                    long a = pop(stack);
-                    stack.push(-a);
+                    BigInteger a = pop(stack);
+                    stack.push(a.negate());
                 }
                 case "+" -> {
-                    long b = pop(stack);
-                    long a = pop(stack);
-                    stack.push(a + b);
+                    BigInteger b = pop(stack);
+                    BigInteger a = pop(stack);
+                    stack.push(a.add(b));
                 }
                 case "-" -> {
-                    long b = pop(stack);
-                    long a = pop(stack);
-                    stack.push(a - b);
+                    BigInteger b = pop(stack);
+                    BigInteger a = pop(stack);
+                    stack.push(a.subtract(b));
                 }
                 case "*" -> {
-                    long b = pop(stack);
-                    long a = pop(stack);
-                    stack.push(a * b);
+                    BigInteger b = pop(stack);
+                    BigInteger a = pop(stack);
+                    stack.push(a.multiply(b));
                 }
                 case "/" -> {
-                    long b = pop(stack);
-                    long a = pop(stack);
-                    if (b == 0) {
+                    BigInteger b = pop(stack);
+                    BigInteger a = pop(stack);
+                    if (b.equals(BigInteger.ZERO)) {
                         throw new ArithmeticException("Division by zero.");
                     }
-                    stack.push(a / b);
+                    stack.push(a.divide(b));
                 }
                 case "%" -> {
-                    long b = pop(stack);
-                    long a = pop(stack);
-                    if (b == 0) {
+                    BigInteger b = pop(stack);
+                    BigInteger a = pop(stack);
+                    if (b.equals(BigInteger.ZERO)) {
                         throw new ArithmeticException("Division by zero.");
                     }
-                    stack.push(a % b);
+                    stack.push(a.remainder(b));
                 }
                 case "&" -> {
-                    long b = pop(stack);
-                    long a = pop(stack);
-                    stack.push(a & b);
+                    BigInteger b = pop(stack);
+                    BigInteger a = pop(stack);
+                    stack.push(a.and(b));
                 }
                 case "|" -> {
-                    long b = pop(stack);
-                    long a = pop(stack);
-                    stack.push(a | b);
+                    BigInteger b = pop(stack);
+                    BigInteger a = pop(stack);
+                    stack.push(a.or(b));
                 }
                 case "^", "XOR" -> {
-                    long b = pop(stack);
-                    long a = pop(stack);
-                    stack.push(a ^ b);
+                    BigInteger b = pop(stack);
+                    BigInteger a = pop(stack);
+                    stack.push(a.xor(b));
                 }
                 case "NAND" -> {
-                    long b = pop(stack);
-                    long a = pop(stack);
-                    stack.push(~(a & b));
+                    BigInteger b = pop(stack);
+                    BigInteger a = pop(stack);
+                    stack.push(a.and(b).not());
                 }
                 case "NOR" -> {
-                    long b = pop(stack);
-                    long a = pop(stack);
-                    stack.push(~(a | b));
+                    BigInteger b = pop(stack);
+                    BigInteger a = pop(stack);
+                    stack.push(a.or(b).not());
                 }
                 case "<<" -> {
-                    long b = pop(stack);
-                    long a = pop(stack);
-                    stack.push(a << b);
+                    BigInteger b = pop(stack);
+                    BigInteger a = pop(stack);
+                    stack.push(a.shiftLeft(toShiftCount(b)));
                 }
                 case ">>" -> {
-                    long b = pop(stack);
-                    long a = pop(stack);
-                    stack.push(a >> b);
+                    BigInteger b = pop(stack);
+                    BigInteger a = pop(stack);
+                    stack.push(a.shiftRight(toShiftCount(b)));
                 }
                 default -> throw new IllegalArgumentException("Unsupported operator: " + token);
             }
@@ -647,14 +648,24 @@ public class ProgrammerCalculator extends JPanel {
         return stack.pop();
     }
 
-    private long pop(Deque<Long> stack) {
+    private BigInteger pop(Deque<BigInteger> stack) {
         if (stack.isEmpty()) {
             throw new IllegalArgumentException("Malformed expression.");
         }
         return stack.pop();
     }
 
-    private long parseNumber(String token, int radix) {
+    private int toShiftCount(BigInteger value) {
+        if (value.signum() < 0) {
+            throw new IllegalArgumentException("Shift count cannot be negative.");
+        }
+        if (value.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0) {
+            throw new IllegalArgumentException("Shift count is too large.");
+        }
+        return value.intValue();
+    }
+
+    private BigInteger parseNumber(String token, int radix) {
         boolean negative = token.startsWith("-");
         String body = negative ? token.substring(1) : token;
 
@@ -671,7 +682,8 @@ public class ProgrammerCalculator extends JPanel {
             }
         }
 
-        long value = Long.parseLong(body, radix);
-        return negative ? -value : value;
+        BigInteger value = new BigInteger(body, radix);
+        return negative ? value.negate() : value;
     }
+
 }
